@@ -17,19 +17,26 @@ public class PlayUseCase: UseCase {
         var result = ""
         if (invalidGame()) {
             result = "invalid"
-            observer.invalidGame()
         } else if (p1 == p2) {
             result = "tie"
-            observer.tie()
         } else if (p1Wins()) {
             result = "p1"
-            observer.p1Wins()
         } else {
             result = "p2"
-            observer.p2Wins()
         }
+
         let game = Game(p1: p1, p2: p2, result: result)
         repo.save(game: game) { (game: Game) in }
+
+        if (invalidGame()) {
+            observer.invalidGame()
+        } else if (p1 == p2) {
+            observer.tie()
+        } else if (p1Wins()) {
+            observer.p1Wins()
+        } else {
+            observer.p2Wins()
+        }
     }
 
     private func p1Wins() -> Bool {
