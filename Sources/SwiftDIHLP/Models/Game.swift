@@ -4,13 +4,13 @@ public struct Game {
     public let id: UUID?
     public let p1: String
     public let p2: String
-    public let result: String
+    public let result: GameResult
 
-    public init(p1: String, p2: String, result: String) {
+    public init(p1: String, p2: String, result: GameResult) {
         self.init(p1: p1, p2: p2, result: result, id: nil)
     }
 
-    public init(p1: String, p2: String, result: String, id: UUID?) {
+    public init(p1: String, p2: String, result: GameResult, id: UUID?) {
         self.id = id
         self.p1 = p1
         self.p2 = p2

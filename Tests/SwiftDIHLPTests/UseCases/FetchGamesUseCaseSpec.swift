@@ -24,7 +24,7 @@ class FetchGamesUseCaseSpec: QuickSpec {
 
             describe("when a game is played") {
                 it("calls its closure with an array containing the game") {
-                    let game = Game(p1: "rock", p2: "scissors", result: "p1")
+                    let game = Game(p1: "rock", p2: "scissors", result: .P1Wins)
 
                     let play = PlayUseCase(p1: game.p1, p2: game.p2, observer: GameObserverSpy(), repo: repo)
                     play.execute()

@@ -5,21 +5,26 @@ class GameObserverSpy: GameObserver {
     var p2WinsWasCalled = false
     var tieWasCalled = false
     var invalidGameWasCalled = false
+    var passedInGame: Game? = nil
 
-    func p1Wins() {
+    func p1Wins(game: Game) {
         p1WinsWasCalled = true
+        passedInGame = game
     }
 
-    func tie() {
+    func tie(game: Game) {
         tieWasCalled = true
+        passedInGame = game
     }
 
-    func p2Wins() {
+    func p2Wins(game: Game) {
         p2WinsWasCalled = true
+        passedInGame = game
     }
 
-    func invalidGame() {
+    func invalidGame(game: Game) {
         invalidGameWasCalled = true
+        passedInGame = game
     }
 
     func reset() {
@@ -27,5 +32,6 @@ class GameObserverSpy: GameObserver {
         p2WinsWasCalled = false
         tieWasCalled = false
         invalidGameWasCalled = false
+        passedInGame = nil
     }
 }

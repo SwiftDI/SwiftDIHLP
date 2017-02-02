@@ -14,7 +14,7 @@ class GameRepositorySpec: QuickSpec {
 
         describe("save") {
             it("calls its completion with the saved game") {
-                let game = Game(p1: "p1", p2: "p2", result: "result")
+                let game = Game(p1: "p1", p2: "p2", result: .Invalid)
                 var capturedGame: Game? = nil
 
                 gameRepository.save(game: game) {
@@ -51,7 +51,7 @@ class GameRepositorySpec: QuickSpec {
             context("when there is a saved game") {
                 var fetchedGames: [Game] = []
 
-                let game = Game(p1: "p1", p2: "p2", result: "result")
+                let game = Game(p1: "p1", p2: "p2", result: .Invalid)
                 gameRepository.save(game: game) {
                     (savedGame: Game) in
                 }

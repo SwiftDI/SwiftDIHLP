@@ -14,28 +14,26 @@ public class PlayUseCase: UseCase {
     }
 
     public func execute() {
-        var result = ""
         if (invalidGame()) {
-            result = "invalid"
+            repo.save(game: Game(p1: p1, p2: p2, result: .Invalid)) {
+                (game: Game) in
+                observer.invalidGame(game: game)
+            }
         } else if (p1 == p2) {
-            result = "tie"
+            repo.save(game: Game(p1: p1, p2: p2, result: .Tie)) {
+                (game: Game) in
+                observer.tie(game: game)
+            }
         } else if (p1Wins()) {
-            result = "p1"
+            repo.save(game: Game(p1: p1, p2: p2, result: .P1Wins)) {
+                (game: Game) in
+                observer.p1Wins(game: game)
+            }
         } else {
-            result = "p2"
-        }
-
-        let game = Game(p1: p1, p2: p2, result: result)
-        repo.save(game: game) { (game: Game) in }
-
-        if (invalidGame()) {
-            observer.invalidGame()
-        } else if (p1 == p2) {
-            observer.tie()
-        } else if (p1Wins()) {
-            observer.p1Wins()
-        } else {
-            observer.p2Wins()
+            repo.save(game: Game(p1: p1, p2: p2, result: .P2Wins)) {
+                (game: Game) in
+                observer.p2Wins(game: game)
+            }
         }
     }
 
@@ -51,8 +49,8 @@ public class PlayUseCase: UseCase {
 }
 
 public protocol GameObserver {
-    func p1Wins()
-    func p2Wins()
-    func tie()
-    func invalidGame()
+    func p1Wins(game: Game)
+    func p2Wins(game: Game)
+    func tie(game: Game)
+    func invalidGame(game: Game)
 }

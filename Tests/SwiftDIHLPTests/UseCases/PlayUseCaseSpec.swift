@@ -21,6 +21,7 @@ class PlaySpec: QuickSpec {
                         let play = PlayUseCase(p1: p1, p2: "rock", observer: observer, repo: repo)
                         play.execute()
                         expect(observer.tieWasCalled).to(beTrue())
+                        expect(observer.passedInGame!.result).to(equal(GameResult.Tie))
                     }
                 }
 
@@ -29,6 +30,7 @@ class PlaySpec: QuickSpec {
                         let play = PlayUseCase(p1: p1, p2: "paper", observer: observer, repo: repo)
                         play.execute()
                         expect(observer.p2WinsWasCalled).to(beTrue())
+                        expect(observer.passedInGame!.result).to(equal(GameResult.P2Wins))
                     }
                 }
 
@@ -37,6 +39,7 @@ class PlaySpec: QuickSpec {
                         let play = PlayUseCase(p1: p1, p2: "scissors", observer: observer, repo: repo)
                         play.execute()
                         expect(observer.p1WinsWasCalled).to(beTrue())
+                        expect(observer.passedInGame!.result).to(equal(GameResult.P1Wins))
                     }
                 }
             }
@@ -49,6 +52,7 @@ class PlaySpec: QuickSpec {
                         let play = PlayUseCase(p1: p1, p2: "rock", observer: observer, repo: repo)
                         play.execute()
                         expect(observer.p1WinsWasCalled).to(beTrue())
+                        expect(observer.passedInGame!.result).to(equal(GameResult.P1Wins))
                     }
                 }
 
@@ -57,6 +61,7 @@ class PlaySpec: QuickSpec {
                         let play = PlayUseCase(p1: p1, p2: "paper", observer: observer, repo: repo)
                         play.execute()
                         expect(observer.tieWasCalled).to(beTrue())
+                        expect(observer.passedInGame!.result).to(equal(GameResult.Tie))
                     }
                 }
 
@@ -65,6 +70,7 @@ class PlaySpec: QuickSpec {
                         let play = PlayUseCase(p1: p1, p2: "scissors", observer: observer, repo: repo)
                         play.execute()
                         expect(observer.p2WinsWasCalled).to(beTrue())
+                        expect(observer.passedInGame!.result).to(equal(GameResult.P2Wins))
                     }
                 }
             }
@@ -77,6 +83,7 @@ class PlaySpec: QuickSpec {
                         let play = PlayUseCase(p1: p1, p2: "rock", observer: observer, repo: repo)
                         play.execute()
                         expect(observer.p2WinsWasCalled).to(beTrue())
+                        expect(observer.passedInGame!.result).to(equal(GameResult.P2Wins))
                     }
                 }
 
@@ -85,6 +92,7 @@ class PlaySpec: QuickSpec {
                         let play = PlayUseCase(p1: p1, p2: "paper", observer: observer, repo: repo)
                         play.execute()
                         expect(observer.p1WinsWasCalled).to(beTrue())
+                        expect(observer.passedInGame!.result).to(equal(GameResult.P1Wins))
                     }
                 }
 
@@ -93,6 +101,7 @@ class PlaySpec: QuickSpec {
                         let play = PlayUseCase(p1: p1, p2: "scissors", observer: observer, repo: repo)
                         play.execute()
                         expect(observer.tieWasCalled).to(beTrue())
+                        expect(observer.passedInGame!.result).to(equal(GameResult.Tie))
                     }
                 }
             }
@@ -102,6 +111,7 @@ class PlaySpec: QuickSpec {
                     let play = PlayUseCase(p1: "invalid", p2: "rock", observer: observer, repo: repo)
                     play.execute()
                     expect(observer.invalidGameWasCalled).to(beTrue())
+                    expect(observer.passedInGame!.result).to(equal(GameResult.Invalid))
                 }
             }
 
@@ -110,6 +120,7 @@ class PlaySpec: QuickSpec {
                     let play = PlayUseCase(p1: "rock", p2: "invalid", observer: observer, repo: repo)
                     play.execute()
                     expect(observer.invalidGameWasCalled).to(beTrue())
+                    expect(observer.passedInGame!.result).to(equal(GameResult.Invalid))
                 }
             }
         }
