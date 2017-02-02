@@ -34,7 +34,7 @@ class GameRepositorySpec: QuickSpec {
             }
         }
 
-        describe("fetch") {
+        describe("fetch games") {
             context("when there are no saved games") {
                 it("calls its completion with an empty array") {
                     var fetchedGames: [Game] = []
@@ -66,6 +66,44 @@ class GameRepositorySpec: QuickSpec {
                 expect(fetchedGame.p1).to(equal(game.p1))
                 expect(fetchedGame.p2).to(equal(game.p2))
                 expect(fetchedGame.result).to(equal(game.result))
+            }
+        }
+
+        describe("fetch game by id") {
+            context("when there is no game with that id") {
+                it("calls its completion with nil") {
+                    var fetchedGame: Game? = nil
+
+                    gameRepository.fetch(id: UUID()) {
+                        (game: Game?) in
+                        fetchedGame = game
+                    }
+
+                    expect(fetchedGame).to(beNil())
+                }
+            }
+
+            context("when there is a game with that id") {
+                it("call its completion with the fetched game") {
+                    var fetchedGame: Game? = nil
+
+                    let game = Game(p1: "p1", p2: "p2", result: .Invalid)
+                    var savedGame: Game? = nil
+                    gameRepository.save(game: game) {
+                        (game: Game) in
+                        savedGame = game
+                    }
+
+                    gameRepository.fetch(id: savedGame!.id!) {
+                        (game: Game?) in
+                        fetchedGame = game
+                    }
+
+                    expect(fetchedGame).notTo(beNil())
+                    expect(fetchedGame!.p1).to(equal(game.p1))
+                    expect(fetchedGame!.p2).to(equal(game.p2))
+                    expect(fetchedGame!.result).to(equal(game.result))
+                }
             }
         }
     }

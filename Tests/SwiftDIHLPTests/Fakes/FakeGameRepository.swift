@@ -14,6 +14,10 @@ class FakeGameRepository: GameRepository {
         completion(games)
     }
 
+    func fetch(id: UUID, completion: FetchGameCompletion) {
+        completion(games.filter({$0.id! == id}).first)
+    }
+
     func deleteAll() {
         games = []
     }
