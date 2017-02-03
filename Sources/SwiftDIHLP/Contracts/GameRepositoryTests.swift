@@ -10,7 +10,7 @@ open class GameRepositoryTests: XCTestCase {
         gameRepository.deleteAll()
     }
 
-    func testSave_callsTheCompletionWithTheSavedGames() {
+    public func testSave_callsTheCompletionWithTheSavedGames() {
         guard let gameRepository = gameRepository else { return }
 
         let game = Game(p1: "p1", p2: "p2", result: .Invalid)
@@ -32,7 +32,7 @@ open class GameRepositoryTests: XCTestCase {
         XCTAssertEqual(savedGame.result, game.result)
     }
 
-    func testFetchGames_whenThereAreNoSavedGames_callsTheCompletionWithEmptyArray() {
+    public func testFetchGames_whenThereAreNoSavedGames_callsTheCompletionWithEmptyArray() {
         guard let gameRepository = gameRepository else { return }
 
         var fetchedGames: [Game] = []
@@ -45,7 +45,7 @@ open class GameRepositoryTests: XCTestCase {
         XCTAssertEqual(fetchedGames, [])
     }
 
-    func testFetchGames_whenThereIsASavedGame_callsTheCompletionWithTheGame() {
+    public func testFetchGames_whenThereIsASavedGame_callsTheCompletionWithTheGame() {
         guard let gameRepository = gameRepository else { return }
 
         var fetchedGames: [Game] = []
@@ -67,7 +67,7 @@ open class GameRepositoryTests: XCTestCase {
         XCTAssertEqual(fetchedGame.result, game.result)
     }
 
-    func testFetchGameById_whenThereIsNoGameWithThatId_callsTheCompletionWithNil() {
+    public func testFetchGameById_whenThereIsNoGameWithThatId_callsTheCompletionWithNil() {
         guard let gameRepository = gameRepository else { return }
 
         var fetchedGame: Game? = nil
@@ -80,7 +80,7 @@ open class GameRepositoryTests: XCTestCase {
         XCTAssertNil(fetchedGame)
     }
 
-    func testFetchGameById_whenThereIsAGameWithTheId_callsTheCompletionWithTheFetchedGame() {
+    public func testFetchGameById_whenThereIsAGameWithTheId_callsTheCompletionWithTheFetchedGame() {
         guard let gameRepository = gameRepository else { return }
 
         var fetchedGame: Game? = nil
