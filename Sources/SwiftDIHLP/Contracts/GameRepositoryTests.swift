@@ -4,6 +4,16 @@ import Foundation
 open class GameRepositoryTests: XCTestCase {
     public var gameRepository: GameRepository?
 
+    static var allTests: [(String, (GameRepositoryTests) -> () throws -> Void)] {
+        return [
+            ("testSave_callsTheCompletionWithTheSavedGames", testSave_callsTheCompletionWithTheSavedGames),
+            ("testFetchGames_whenThereAreNoSavedGames_callsTheCompletionWithEmptyArray", testFetchGames_whenThereAreNoSavedGames_callsTheCompletionWithEmptyArray),
+            ("testFetchGames_whenThereIsASavedGame_callsTheCompletionWithTheGame", testFetchGames_whenThereIsASavedGame_callsTheCompletionWithTheGame),
+            ("testFetchGameById_whenThereIsNoGameWithThatId_callsTheCompletionWithNil", testFetchGameById_whenThereIsNoGameWithThatId_callsTheCompletionWithNil),
+            ("testFetchGameById_whenThereIsAGameWithTheId_callsTheCompletionWithTheFetchedGame", testFetchGameById_whenThereIsAGameWithTheId_callsTheCompletionWithTheFetchedGame)
+        ]
+    }
+
     override open func setUp() {
         super.setUp()
         guard let gameRepository = gameRepository else { return }
