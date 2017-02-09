@@ -14,7 +14,7 @@ public class FetchGamesUseCase: UseCase {
 
     public func execute() {
         repo.fetch { (games: [Game]) in
-            observer.fetched(games: games)
+            self.observer.fetched(games: games)
         }
     }
 }

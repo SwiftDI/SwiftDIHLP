@@ -17,22 +17,22 @@ public class PlayUseCase: UseCase {
         if (invalidGame()) {
             repo.save(game: Game(p1: p1, p2: p2, result: .Invalid)) {
                 (game: Game) in
-                observer.invalidGame(game: game)
+                self.observer.invalidGame(game: game)
             }
         } else if (p1 == p2) {
             repo.save(game: Game(p1: p1, p2: p2, result: .Tie)) {
                 (game: Game) in
-                observer.tie(game: game)
+                self.observer.tie(game: game)
             }
         } else if (p1Wins()) {
             repo.save(game: Game(p1: p1, p2: p2, result: .P1Wins)) {
                 (game: Game) in
-                observer.p1Wins(game: game)
+                self.observer.p1Wins(game: game)
             }
         } else {
             repo.save(game: Game(p1: p1, p2: p2, result: .P2Wins)) {
                 (game: Game) in
-                observer.p2Wins(game: game)
+                self.observer.p2Wins(game: game)
             }
         }
     }
