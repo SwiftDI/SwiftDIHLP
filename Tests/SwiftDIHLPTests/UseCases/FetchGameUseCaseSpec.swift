@@ -15,29 +15,27 @@ class FetchGameUseCaseSpec: QuickSpec {
             }
 
             context("when the game exists") {
-                it("calls the observer's callback with the game") {
+                it("calls the observer's fetched callback with the game") {
                     let game = Game(p1: "p1", p2: "p2", result: GameResult.Invalid)
 
-                    var savedGame: Game? = nil
-                    repo.save(game: game) {
-                        (game: Game) in
-                        savedGame = game
+                    waitUntil { done in
+                        repo.save(game: game) {
+                            (savedGame: Game) in
+
+                            FetchGameByIdUseCase(id: savedGame.id!, observer: observerSpy, repo: repo).execute()
+
+                            expect(observerSpy.fetchedGame).to(equal(savedGame))
+                            done()
+                        }
                     }
-
-                    let fetchGameById = FetchGameByIdUseCase(id: savedGame!.id!, observer: observerSpy, repo: repo)
-                    fetchGameById.execute()
-
-                    expect(observerSpy.fetchedGame).notTo(beNil())
-                    expect(observerSpy.fetchedGame).to(equal(savedGame))
                 }
             }
 
             context("when the game does not exist") {
-                it("calls the observer's callback with nil") {
-                    let fetchGameById = FetchGameByIdUseCase(id: UUID(), observer: observerSpy, repo: repo)
-                    fetchGameById.execute()
+                it("calls the observer's gameNotFound callback") {
+                    FetchGameByIdUseCase(id: UUID(), observer: observerSpy, repo: repo).execute()
 
-                    expect(observerSpy.fetchedGame).to(beNil())
+                    expect(observerSpy.gameNotFoundWasCalled).to(beTrue())
                 }
             }
         }

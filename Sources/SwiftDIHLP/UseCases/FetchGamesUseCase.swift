@@ -1,6 +1,7 @@
 public protocol GameHistoryObserver {
     func fetched(games: [Game])
-    func fetched(game: Game?)
+    func fetched(game: Game)
+    func gameNotFound()
 }
 
 public class FetchGamesUseCase: UseCase {

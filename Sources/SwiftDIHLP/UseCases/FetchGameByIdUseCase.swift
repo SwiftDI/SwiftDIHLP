@@ -12,9 +12,12 @@ public class FetchGameByIdUseCase: UseCase {
     }
 
     public func execute() {
-        repo.fetch(id: id) {
-            (game: Game?) in
-            self.observer.fetched(game: game)
+        repo.fetch(id: id) { (game: Game?) in
+            if let game = game {
+                self.observer.fetched(game: game)
+            } else {
+                self.observer.gameNotFound()
+            }
         }
     }
 }
