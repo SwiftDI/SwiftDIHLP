@@ -20,6 +20,12 @@ open class GameRepositoryTests: XCTestCase {
         gameRepository.deleteAll()
     }
 
+    override open func tearDown() {
+        super.tearDown()
+        guard let gameRepository = gameRepository else { return }
+        gameRepository.deleteAll()
+    }
+
     public func testSave_callsTheCompletionWithTheSavedGames() {
         guard let gameRepository = gameRepository else { return }
 
