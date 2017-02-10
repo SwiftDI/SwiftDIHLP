@@ -30,94 +30,77 @@ open class GameRepositoryTests: XCTestCase {
         guard let gameRepository = gameRepository else { return }
 
         let game = Game(p1: "p1", p2: "p2", result: .Invalid)
-        var capturedGame: Game? = nil
 
-        gameRepository.save(game: game) {
-            (savedGame: Game) in
-            capturedGame = savedGame
+        let e = expectation(description: "Saving game")
+        gameRepository.save(game: game) { (savedGame: Game) in
+            XCTAssertNotNil(savedGame.id)
+            XCTAssertEqual(savedGame.p1, game.p1)
+            XCTAssertEqual(savedGame.p2, game.p2)
+            XCTAssertEqual(savedGame.result, game.result)
+            e.fulfill()
         }
-
-        guard let savedGame = capturedGame else {
-            XCTFail()
-            return
-        }
-
-        XCTAssertNotNil(savedGame.id)
-        XCTAssertEqual(savedGame.p1, game.p1)
-        XCTAssertEqual(savedGame.p2, game.p2)
-        XCTAssertEqual(savedGame.result, game.result)
+        waitForExpectations(timeout: 10, handler: nil)
     }
 
     public func testFetchGames_whenThereAreNoSavedGames_callsTheCompletionWithEmptyArray() {
         guard let gameRepository = gameRepository else { return }
 
-        var fetchedGames: [Game] = []
-
-        gameRepository.fetch() {
-            (games: [Game]) in
-            fetchedGames = games
+        let e = expectation(description: "Fetching empty games")
+        gameRepository.fetch() { (games: [Game]) in
+            XCTAssertEqual(games, [])
+            e.fulfill()
         }
-
-        XCTAssertEqual(fetchedGames, [])
+        waitForExpectations(timeout: 10, handler: nil)
     }
 
     public func testFetchGames_whenThereIsASavedGame_callsTheCompletionWithTheGame() {
         guard let gameRepository = gameRepository else { return }
 
-        var fetchedGames: [Game] = []
-
         let game = Game(p1: "p1", p2: "p2", result: .Invalid)
-        gameRepository.save(game: game) {
-            (savedGame: Game) in
-        }
 
-        gameRepository.fetch() {
-            (games: [Game]) in
-            fetchedGames = games
+        let e = expectation(description: "Fetching games")
+        gameRepository.save(game: game) { (savedGame: Game) in
+            gameRepository.fetch() { (games: [Game]) in
+                XCTAssertEqual(games.count, 1)
+                let fetchedGame = games[0]
+                XCTAssertEqual(fetchedGame.p1, game.p1)
+                XCTAssertEqual(fetchedGame.p2, game.p2)
+                XCTAssertEqual(fetchedGame.result, game.result)
+                e.fulfill()
+            }
         }
-
-        XCTAssertEqual(fetchedGames.count, 1)
-        let fetchedGame = fetchedGames[0]
-        XCTAssertEqual(fetchedGame.p1, game.p1)
-        XCTAssertEqual(fetchedGame.p2, game.p2)
-        XCTAssertEqual(fetchedGame.result, game.result)
+        waitForExpectations(timeout: 10, handler: nil)
     }
 
     public func testFetchGameById_whenThereIsNoGameWithThatId_callsTheCompletionWithNil() {
         guard let gameRepository = gameRepository else { return }
 
-        var fetchedGame: Game? = nil
-
-        gameRepository.fetch(id: UUID()) {
-            (game: Game?) in
-            fetchedGame = game
+        let e = expectation(description: "Fetching non-existent game")
+        gameRepository.fetch(id: UUID()) { (game: Game?) in
+            XCTAssertNil(game)
+            e.fulfill()
         }
+        waitForExpectations(timeout: 10, handler: nil)
 
-        XCTAssertNil(fetchedGame)
     }
 
     public func testFetchGameById_whenThereIsAGameWithTheId_callsTheCompletionWithTheFetchedGame() {
         guard let gameRepository = gameRepository else { return }
 
-        var fetchedGame: Game? = nil
-
         let game = Game(p1: "p1", p2: "p2", result: .Invalid)
-        var savedGame: Game? = nil
-        gameRepository.save(game: game) {
-            (game: Game) in
-            savedGame = game
-        }
 
-        gameRepository.fetch(id: savedGame!.id!) {
-            (game: Game?) in
-            fetchedGame = game
+        let e = expectation(description: "Fetching game")
+        gameRepository.save(game: game) { (savedGame: Game) in
+            gameRepository.fetch(id: savedGame.id!) { (fetchedGame: Game?) in
+                XCTAssertNotNil(fetchedGame)
+                if let fetchedGame = fetchedGame {
+                    XCTAssertEqual(fetchedGame.p1, game.p1)
+                    XCTAssertEqual(fetchedGame.p2, game.p2)
+                    XCTAssertEqual(fetchedGame.result, game.result)
+                    e.fulfill()
+                }
+            }
         }
-
-        XCTAssertNotNil(fetchedGame)
-        if let fetchedGame = fetchedGame {
-            XCTAssertEqual(fetchedGame.p1, game.p1)
-            XCTAssertEqual(fetchedGame.p2, game.p2)
-            XCTAssertEqual(fetchedGame.result, game.result)
-        }
+        waitForExpectations(timeout: 10, handler: nil)
     }
 }
