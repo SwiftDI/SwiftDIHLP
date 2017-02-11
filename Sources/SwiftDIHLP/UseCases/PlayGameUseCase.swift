@@ -1,12 +1,19 @@
-public class PlayUseCase: UseCase {
+public protocol PlayGameObserver {
+    func p1Wins(game: Game)
+    func p2Wins(game: Game)
+    func tie(game: Game)
+    func invalidGame(game: Game)
+}
+
+public class PlayGameUseCase: UseCase {
     let p1: String
     let p2: String
-    let observer: GameObserver
+    let observer: PlayGameObserver
     let repo: GameRepository
 
     let validThrows = ["rock", "paper", "scissors"]
 
-    public init(p1: String, p2: String, observer: GameObserver, repo: GameRepository) {
+    public init(p1: String, p2: String, observer: PlayGameObserver, repo: GameRepository) {
         self.p1 = p1
         self.p2 = p2
         self.observer = observer
@@ -46,11 +53,4 @@ public class PlayUseCase: UseCase {
     private func invalidGame() -> Bool {
         return !(validThrows.contains(p1) && validThrows.contains(p2))
     }
-}
-
-public protocol GameObserver {
-    func p1Wins(game: Game)
-    func p2Wins(game: Game)
-    func tie(game: Game)
-    func invalidGame(game: Game)
 }

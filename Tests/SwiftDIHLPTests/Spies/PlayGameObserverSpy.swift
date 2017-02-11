@@ -1,6 +1,6 @@
 import SwiftDIHLP
 
-class GameObserverSpy: GameObserver {
+class PlayGameObserverSpy: PlayGameObserver {
     var p1WinsWasCalled = false
     var p2WinsWasCalled = false
     var tieWasCalled = false
