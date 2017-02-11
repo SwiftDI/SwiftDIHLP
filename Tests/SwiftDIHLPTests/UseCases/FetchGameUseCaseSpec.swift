@@ -6,7 +6,7 @@ import Foundation
 class FetchGameUseCaseSpec: QuickSpec {
     override func spec() {
         describe("fetch a game by id") {
-            let observerSpy = FetchGamesObserverSpy()
+            let observerSpy = FetchGameObserverSpy()
             let repo = FakeGameRepository()
 
             beforeEach() {

@@ -1,11 +1,16 @@
 import Foundation
 
+public protocol FetchGameObserver {
+    func fetched(game: Game)
+    func gameNotFound()
+}
+
 public class FetchGameByIdUseCase: UseCase {
     let id: UUID
-    let observer: FetchGamesObserver
+    let observer: FetchGameObserver
     let repo: GameRepository
 
-    public init(id: UUID, observer: FetchGamesObserver, repo: GameRepository) {
+    public init(id: UUID, observer: FetchGameObserver, repo: GameRepository) {
         self.id = id
         self.observer = observer
         self.repo = repo
