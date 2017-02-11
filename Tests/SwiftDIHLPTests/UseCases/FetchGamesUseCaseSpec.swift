@@ -5,7 +5,7 @@ import SwiftDIHLP
 class FetchGamesUseCaseSpec: QuickSpec {
     override func spec() {
         describe("fetch games") {
-            let observerSpy = GameHistoryObserverSpy()
+            let observerSpy = FetchGamesObserverSpy()
             let repo = FakeGameRepository()
 
             beforeEach() {

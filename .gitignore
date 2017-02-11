@@ -3,4 +3,6 @@
 /Packages
 /*.xcodeproj
 *.xcuserstate
+*.xcuserdata*
 xcshareddata/
+.idea

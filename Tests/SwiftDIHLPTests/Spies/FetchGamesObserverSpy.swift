@@ -1,6 +1,6 @@
 import SwiftDIHLP
 
-class GameHistoryObserverSpy: GameHistoryObserver {
+class FetchGamesObserverSpy: FetchGamesObserver {
     var fetchedGames: [Game] = []
     var fetchedGame: Game?
     var gameNotFoundWasCalled = false

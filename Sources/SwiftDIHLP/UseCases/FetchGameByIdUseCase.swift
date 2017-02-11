@@ -2,10 +2,10 @@ import Foundation
 
 public class FetchGameByIdUseCase: UseCase {
     let id: UUID
-    let observer: GameHistoryObserver
+    let observer: FetchGamesObserver
     let repo: GameRepository
 
-    public init(id: UUID, observer: GameHistoryObserver, repo: GameRepository) {
+    public init(id: UUID, observer: FetchGamesObserver, repo: GameRepository) {
         self.id = id
         self.observer = observer
         self.repo = repo
