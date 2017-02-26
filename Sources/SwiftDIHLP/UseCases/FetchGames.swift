@@ -2,7 +2,7 @@ public protocol FetchGamesObserver {
     func fetched(games: [Game])
 }
 
-public class FetchGamesUseCase: UseCase {
+public class FetchGames {
     let observer: FetchGamesObserver
     let repo: GameRepository
 

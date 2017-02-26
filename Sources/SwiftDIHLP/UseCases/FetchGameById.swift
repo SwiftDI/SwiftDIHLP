@@ -5,18 +5,16 @@ public protocol FetchGameObserver {
     func gameNotFound()
 }
 
-public class FetchGameByIdUseCase: UseCase {
-    let id: UUID
+public class FetchGameById {
     let observer: FetchGameObserver
     let repo: GameRepository
 
-    public init(id: UUID, observer: FetchGameObserver, repo: GameRepository) {
-        self.id = id
+    public init(observer: FetchGameObserver, repo: GameRepository) {
         self.observer = observer
         self.repo = repo
     }
 
-    public func execute() {
+    public func execute(id: UUID) {
         repo.fetch(id: id) { (game: Game?) in
             if let game = game {
                 self.observer.fetched(game: game)

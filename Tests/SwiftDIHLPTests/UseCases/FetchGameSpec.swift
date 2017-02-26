@@ -3,11 +3,12 @@ import Nimble
 import SwiftDIHLP
 import Foundation
 
-class FetchGameUseCaseSpec: QuickSpec {
+class FetchGameSpec: QuickSpec {
     override func spec() {
         describe("fetch a game by id") {
             let observerSpy = FetchGameObserverSpy()
             let repo = FakeGameRepository()
+            let fetchGameById = FetchGameById(observer: observerSpy, repo: repo)
 
             beforeEach() {
                 observerSpy.reset()
@@ -22,7 +23,7 @@ class FetchGameUseCaseSpec: QuickSpec {
                         repo.save(game: game) {
                             (savedGame: Game) in
 
-                            FetchGameByIdUseCase(id: savedGame.id!, observer: observerSpy, repo: repo).execute()
+                            fetchGameById.execute(id: savedGame.id!)
 
                             expect(observerSpy.fetchedGame).to(equal(savedGame))
                             done()
@@ -33,7 +34,7 @@ class FetchGameUseCaseSpec: QuickSpec {
 
             context("when the game does not exist") {
                 it("calls the observer's gameNotFound callback") {
-                    FetchGameByIdUseCase(id: UUID(), observer: observerSpy, repo: repo).execute()
+                    fetchGameById.execute(id: UUID())
 
                     expect(observerSpy.gameNotFoundWasCalled).to(beTrue())
                 }

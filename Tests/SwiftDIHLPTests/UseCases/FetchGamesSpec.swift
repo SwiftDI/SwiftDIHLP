@@ -2,11 +2,12 @@ import Quick
 import Nimble
 import SwiftDIHLP
 
-class FetchGamesUseCaseSpec: QuickSpec {
+class FetchGamesSpec: QuickSpec {
     override func spec() {
         describe("fetch games") {
             let observerSpy = FetchGamesObserverSpy()
             let repo = FakeGameRepository()
+            let fetchGames = FetchGames(observer: observerSpy, repo: repo)
 
             beforeEach() {
                 observerSpy.reset()
@@ -15,7 +16,7 @@ class FetchGamesUseCaseSpec: QuickSpec {
 
             describe("when no games have been played") {
                 it("calls its closure with an empty array of games") {
-                    FetchGamesUseCase(observer: observerSpy, repo: repo).execute()
+                    fetchGames.execute()
 
                     expect(observerSpy.fetchedGames).to(equal([]))
                 }
@@ -25,9 +26,9 @@ class FetchGamesUseCaseSpec: QuickSpec {
                 it("calls its closure with an array containing the game") {
                     let game = Game(p1: "rock", p2: "scissors", result: .P1Wins)
 
-                    PlayGameUseCase(p1: game.p1, p2: game.p2, observer: PlayGameObserverSpy(), repo: repo).execute()
+                    PlayGame(observer: PlayGameObserverSpy(), repo: repo).execute(p1: game.p1, p2: game.p2)
 
-                    FetchGamesUseCase(observer: observerSpy, repo: repo).execute()
+                    fetchGames.execute()
 
                     expect(observerSpy.fetchedGames.count).to(equal(1))
                     let fetchedGame = observerSpy.fetchedGames[0]

@@ -5,23 +5,19 @@ public protocol PlayGameObserver {
     func invalidGame(game: Game)
 }
 
-public class PlayGameUseCase: UseCase {
-    let p1: String
-    let p2: String
+public class PlayGame {
     let observer: PlayGameObserver
     let repo: GameRepository
 
     let validThrows = ["rock", "paper", "scissors"]
 
-    public init(p1: String, p2: String, observer: PlayGameObserver, repo: GameRepository) {
-        self.p1 = p1
-        self.p2 = p2
+    public init(observer: PlayGameObserver, repo: GameRepository) {
         self.observer = observer
         self.repo = repo
     }
 
-    public func execute() {
-        if (invalidGame()) {
+    public func execute(p1: String, p2: String) {
+        if (invalidGame(p1: p1, p2: p2)) {
             repo.save(game: Game(p1: p1, p2: p2, result: .Invalid)) {
                 (game: Game) in
                 self.observer.invalidGame(game: game)
@@ -31,7 +27,7 @@ public class PlayGameUseCase: UseCase {
                 (game: Game) in
                 self.observer.tie(game: game)
             }
-        } else if (p1Wins()) {
+        } else if (p1Wins(p1: p1, p2: p2)) {
             repo.save(game: Game(p1: p1, p2: p2, result: .P1Wins)) {
                 (game: Game) in
                 self.observer.p1Wins(game: game)
@@ -44,13 +40,13 @@ public class PlayGameUseCase: UseCase {
         }
     }
 
-    private func p1Wins() -> Bool {
+    private func p1Wins(p1: String, p2: String) -> Bool {
         return  (p1 == "rock" && p2 == "scissors") ||
                 (p1 == "paper" && p2 == "rock") ||
                 (p1 == "scissors" && p2 == "paper")
     }
 
-    private func invalidGame() -> Bool {
+    private func invalidGame(p1: String, p2: String) -> Bool {
         return !(validThrows.contains(p1) && validThrows.contains(p2))
     }
 }

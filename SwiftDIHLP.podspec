@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'SwiftDIHLP'
-  s.version = '0.0.16'
+  s.version = '0.0.17'
   s.license = '<LICENSE>'
   s.summary = 'SwiftDI high level policy'
   s.homepage = 'https://github.com/<PATH_TO_REPO>'
