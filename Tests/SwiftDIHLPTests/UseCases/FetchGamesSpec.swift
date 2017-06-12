@@ -5,18 +5,18 @@ import SwiftDIHLP
 class FetchGamesSpec: QuickSpec {
     override func spec() {
         describe("fetch games") {
-            let observerSpy = FetchGamesObserverSpy()
-            let repo = FakeGameRepository()
-            let fetchGames = FetchGames(observer: observerSpy, repo: repo)
+            var repo: FakeGameRepository!
+            var fetchGames: FetchGames!
 
             beforeEach() {
-                observerSpy.reset()
-                repo.deleteAll()
+                repo = FakeGameRepository()
+                fetchGames = FetchGames(repo: repo)
             }
 
             describe("when no games have been played") {
                 it("calls its closure with an empty array of games") {
-                    fetchGames.execute()
+                    let observerSpy = FetchGamesObserverSpy()
+                    fetchGames.execute(observer: observerSpy)
 
                     expect(observerSpy.fetchedGames).to(equal([]))
                 }
@@ -26,9 +26,10 @@ class FetchGamesSpec: QuickSpec {
                 it("calls its closure with an array containing the game") {
                     let game = Game(p1: "rock", p2: "scissors", result: .P1Wins)
 
-                    PlayGame(observer: PlayGameObserverSpy(), repo: repo).execute(p1: game.p1, p2: game.p2)
+                    PlayGame(repo: repo).execute(p1: game.p1, p2: game.p2, observer: PlayGameObserverSpy())
 
-                    fetchGames.execute()
+                    let observerSpy = FetchGamesObserverSpy()
+                    fetchGames.execute(observer: observerSpy)
 
                     expect(observerSpy.fetchedGames.count).to(equal(1))
                     let fetchedGame = observerSpy.fetchedGames[0]

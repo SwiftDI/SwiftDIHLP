@@ -6,36 +6,34 @@ public protocol PlayGameObserver {
 }
 
 public class PlayGame {
-    let observer: PlayGameObserver
     let repo: GameRepository
 
     let validThrows = ["rock", "paper", "scissors"]
 
-    public init(observer: PlayGameObserver, repo: GameRepository) {
-        self.observer = observer
+    public init(repo: GameRepository) {
         self.repo = repo
     }
 
-    public func execute(p1: String, p2: String) {
+    public func execute(p1: String, p2: String, observer: PlayGameObserver) {
         if (invalidGame(p1: p1, p2: p2)) {
             repo.save(game: Game(p1: p1, p2: p2, result: .Invalid)) {
                 (game: Game) in
-                self.observer.invalidGame(game: game)
+                observer.invalidGame(game: game)
             }
         } else if (p1 == p2) {
             repo.save(game: Game(p1: p1, p2: p2, result: .Tie)) {
                 (game: Game) in
-                self.observer.tie(game: game)
+                observer.tie(game: game)
             }
         } else if (p1Wins(p1: p1, p2: p2)) {
             repo.save(game: Game(p1: p1, p2: p2, result: .P1Wins)) {
                 (game: Game) in
-                self.observer.p1Wins(game: game)
+                observer.p1Wins(game: game)
             }
         } else {
             repo.save(game: Game(p1: p1, p2: p2, result: .P2Wins)) {
                 (game: Game) in
-                self.observer.p2Wins(game: game)
+                observer.p2Wins(game: game)
             }
         }
     }

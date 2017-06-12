@@ -6,13 +6,12 @@ import Foundation
 class FetchGameSpec: QuickSpec {
     override func spec() {
         describe("fetch a game by id") {
-            let observerSpy = FetchGameObserverSpy()
-            let repo = FakeGameRepository()
-            let fetchGameById = FetchGameById(observer: observerSpy, repo: repo)
+            var repo: FakeGameRepository!
+            var fetchGameById: FetchGameById!
 
             beforeEach() {
-                observerSpy.reset()
-                repo.deleteAll()
+                repo = FakeGameRepository()
+                fetchGameById = FetchGameById(repo: repo)
             }
 
             context("when the game exists") {
@@ -23,7 +22,8 @@ class FetchGameSpec: QuickSpec {
                         repo.save(game: game) {
                             (savedGame: Game) in
 
-                            fetchGameById.execute(id: savedGame.id!)
+                            let observerSpy = FetchGameObserverSpy()
+                            fetchGameById.execute(id: savedGame.id!, observer: observerSpy)
 
                             expect(observerSpy.fetchedGame).to(equal(savedGame))
                             done()
@@ -34,7 +34,8 @@ class FetchGameSpec: QuickSpec {
 
             context("when the game does not exist") {
                 it("calls the observer's gameNotFound callback") {
-                    fetchGameById.execute(id: UUID())
+                    let observerSpy = FetchGameObserverSpy()
+                    fetchGameById.execute(id: UUID(), observer: observerSpy)
 
                     expect(observerSpy.gameNotFoundWasCalled).to(beTrue())
                 }

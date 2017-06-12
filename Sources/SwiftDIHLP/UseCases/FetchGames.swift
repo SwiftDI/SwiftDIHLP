@@ -3,17 +3,15 @@ public protocol FetchGamesObserver {
 }
 
 public class FetchGames {
-    let observer: FetchGamesObserver
     let repo: GameRepository
 
-    public init(observer: FetchGamesObserver, repo: GameRepository) {
-        self.observer = observer
+    public init(repo: GameRepository) {
         self.repo = repo
     }
 
-    public func execute() {
+    public func execute(observer: FetchGamesObserver) {
         repo.fetch { (games: [Game]) in
-            self.observer.fetched(games: games)
+            observer.fetched(games: games)
         }
     }
 }
